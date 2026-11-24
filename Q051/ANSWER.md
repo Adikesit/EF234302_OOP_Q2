@@ -6,7 +6,7 @@
 1. **Hash Table Bucket Placement:** A `HashMap` in Java organizes entries into buckets based on the hash codes of keys (`hashCode()`), followed by an internal bit-masking/hash-spread calculation (`(n - 1) & hash`). 
 2. **Implementation & Machine Differences:**
    - The exact bucket array capacity and rehashing thresholds can lead to different iteration sequences across different JVM versions or implementations.
-   - For string keys or objects whose hash codes or JVM hash seed randomization might differ across Java versions or architectures (or internal resizing/treeifying order differences when collisions occur), the iteration order over buckets varies.
+   - `String.hashCode()` itself is fixed by the spec, but how `HashMap` spreads hashes, sizes its table and treeifies collisions is an implementation detail that has changed between versions (e.g. Java 7 → 8). Keys using the default `Object.hashCode()` can even get different hashes on every run. Either way the bucket order, and so the iteration order, can differ.
    - Crucially, `HashMap` makes **no guarantee** regarding iteration order; it does not guarantee that the order remains constant over time or across different platforms/JVM runs.
    - To guarantee sorted order, `TreeMap` should be used. To preserve insertion order, `LinkedHashMap` should be used.
 

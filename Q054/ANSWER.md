@@ -62,6 +62,7 @@ In Python:
   - Passing `List[Shirt]` to a function expecting `List[Garment]` is rejected by `mypy` because `List` is mutable and invariant.
   - Calling `add_spare_towels(basket, 2)` where `dst: MutableSequence[Towel]` is rejected by `mypy` when `basket: List[Garment]`, because `MutableSequence` is invariant.
   - Calling `transfer(towels, shirts)` is rejected by `mypy` because `Towel` is incompatible with `Shirt`.
+  - Also rejected, mirroring Java: `total_kg(anything)` (`List[object]` is not `Sequence[Garment]`), `add_spare_towels_anywhere(bath_towels, 1)` (`List[BathTowel].append` cannot take a `Towel`), `g: List[Garment] = shirts` (invariant), and `view.append(Shirt("x"))` when `view: Sequence[Garment]` (`Sequence` has no `append`).
   - Conversely, read-only interfaces such as `Sequence[T]` and `Iterable[T]` are defined as covariant (`Sequence[+T_co]`, `Iterable[+T_co]`), so `total_kg(shirts)` with `Sequence[Garment]` is accepted by `mypy`.
 
 ### How to express `? super Towel` in Python:
